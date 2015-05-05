@@ -1,3 +1,6 @@
 [submodule "MetroRadiance"]
 	path = MetroRadiance
 url=https://github.com/Grabacr07/MetroRadiance
+[submodule "Plugins/EventMapHpViewer"]
+	path = Plugins/EventMapHpViewer
+	url = https://github.com/veigr/EventMapHpViewer.git

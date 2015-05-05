@@ -14,98 +14,135 @@
 			 d:DesignWidth="500"
 			 d:DesignHeight="300"
 			 d:DataContext="{d:DesignInstance viewModels:SettingsViewModel}">
-	<UserControl.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Common.xaml" />
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</UserControl.Resources>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
 
-	<StackPanel>
-		<TextBlock Text="{Binding Resources.Settings_Proxy, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
+    <StackPanel>
+        <TextBlock Text="{Binding Resources.Settings_Proxy, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
 				   Style="{DynamicResource SettingsHeaderTextStyleKey}" />
 
-		<CheckBox x:Name="CheckBoxUseProxy"
+        <CheckBox x:Name="CheckBoxUseProxy"
 				  Content="{Binding Resources.Settings_Proxy_Enable, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
 				  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.IsEnabled}" />
-		<StackPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxUseProxy}"
+        <StackPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxUseProxy}"
 					Margin="20,6,0,6">
-			<Grid Margin="0,4">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="15" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="Auto" />
-				</Grid.ColumnDefinitions>
+            <Grid Margin="0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-				<TextBlock Grid.Column="0">
+                <TextBlock Grid.Column="0">
 					<Run Text="{Binding Resources.Settings_Proxy_Host, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" /><Run Text=": " />
-				</TextBlock>
-				<metro:PromptTextBox Grid.Column="1"
+                </TextBlock>
+                <metro:PromptTextBox Grid.Column="1"
 									 Text="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.Host, Mode=TwoWay}"
 									 Prompt="{Binding Resources.Settings_Proxy_Host, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" />
-				<TextBlock Grid.Column="3">
+                <TextBlock Grid.Column="3">
 					<Run Text="{Binding Resources.Settings_Proxy_Port, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" /><Run Text=": " />
-				</TextBlock>
-				<metro:PromptTextBox Grid.Column="4"
+                </TextBlock>
+                <metro:PromptTextBox Grid.Column="4"
 									 Prompt="{Binding Resources.Settings_Proxy_Port, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
 									 Width="80">
-					<metro:PromptTextBox.Text>
-						<Binding Source="{x:Static models:Settings.Current}"
+                    <metro:PromptTextBox.Text>
+                        <Binding Source="{x:Static models:Settings.Current}"
 								 Path="ProxySettings.Port"
 								 UpdateSourceTrigger="PropertyChanged">
-							<Binding.ValidationRules>
-								<metro:Int32Rule Min="0" />
-							</Binding.ValidationRules>
-						</Binding>
-					</metro:PromptTextBox.Text>
-				</metro:PromptTextBox>
-			</Grid>
+                            <Binding.ValidationRules>
+                                <metro:Int32Rule Min="0" />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </metro:PromptTextBox.Text>
+                </metro:PromptTextBox>
+            </Grid>
 
-			<CheckBox Content="{Binding Resources.Settings_Proxy_Enable_4_SSL, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
+            <CheckBox Content="{Binding Resources.Settings_Proxy_Enable_4_SSL, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
 					  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.IsEnabledOnSSL}"
-					  Margin="0,4" />
+					  Margin="0,4" x:Name="CheckBoxUseSSLProxy" />
 
-			<CheckBox x:Name="CheckBoxAuthRequired"
+            <StackPanel IsEnabled="{Binding IsChecked, ElementName=CheckBoxUseSSLProxy}"
+					Margin="20,6,0,6">
+                <Grid Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="15" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0">
+					<Run Text="{Binding Resources.Settings_Proxy_Host, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" />
+					<Run Text=": " />
+                    </TextBlock>
+                    <metro:PromptTextBox Grid.Column="1"
+									 Text="{Binding Source={x:Static models:Settings.Current}, Path=SSLProxySettings.Host, Mode=TwoWay}"
+									 Prompt="{Binding Resources.Settings_Proxy_Host, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" />
+                    <TextBlock Grid.Column="3">
+					<Run Text="{Binding Resources.Settings_Proxy_Port, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" />
+					<Run Text=": " />
+                    </TextBlock>
+                    <metro:PromptTextBox Grid.Column="4"
+									 Prompt="{Binding Resources.Settings_Proxy_Port, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
+									 Width="80">
+                        <metro:PromptTextBox.Text>
+                            <Binding Source="{x:Static models:Settings.Current}"
+								 Path="SSLProxySettings.Port"
+								 UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                                    <metro:Int32Rule Min="0" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </metro:PromptTextBox.Text>
+                    </metro:PromptTextBox>
+                </Grid>
+            </StackPanel>
+
+            <CheckBox x:Name="CheckBoxAuthRequired"
 					  Content="{Binding Resources.Settings_Network_Proxy_Auth_Required, Source={x:Static models:ResourceService.Current}, Mode=OneWay}"
 					  IsChecked="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.IsAuthRequired}"
 					  Margin="0,4" />
 
-			<Grid IsEnabled="{Binding ElementName=CheckBoxAuthRequired, Path=IsChecked}"
+            <Grid IsEnabled="{Binding ElementName=CheckBoxAuthRequired, Path=IsChecked}"
 				  Margin="0,4">
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="20" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
-					<ColumnDefinition Width="15" />
-					<ColumnDefinition Width="Auto" />
-					<ColumnDefinition Width="*" />
-				</Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="15" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-				<TextBlock Grid.Column="1">
+                <TextBlock Grid.Column="1">
 					<Run Text="{Binding Resources.Settings_Network_Proxy_Auth_Username, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" /><Run Text=": " />
-				</TextBlock>
-				<metro:PromptTextBox Grid.Column="2"
+                </TextBlock>
+                <metro:PromptTextBox Grid.Column="2"
 									 Text="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.Username, Mode=TwoWay}"
 									 Prompt="{Binding Resources.Settings_Network_Proxy_Auth_Username, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" />
-				<TextBlock Grid.Column="4">
+                <TextBlock Grid.Column="4">
 					<Run Text="{Binding Resources.Settings_Network_Proxy_Auth_Password, Source={x:Static models:ResourceService.Current}, Mode=OneWay}" /><Run Text=": " />
-				</TextBlock>
-				<PasswordBox Grid.Column="5">
-					<i:Interaction.Triggers>
-						<i:EventTrigger EventName="LostFocus">
-							<livet:PasswordBoxSetStateToSourceAction Property="Password"
+                </TextBlock>
+                <PasswordBox Grid.Column="5">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="LostFocus">
+                            <livet:PasswordBoxSetStateToSourceAction Property="Password"
 																	 Source="{Binding Source={x:Static models:Settings.Current}, Path=ProxySettings.Password, Mode=TwoWay}" />
-						</i:EventTrigger>
-					</i:Interaction.Triggers>
-				</PasswordBox>
-			</Grid>
-		</StackPanel>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </PasswordBox>
+            </Grid>
+        </StackPanel>
 
-		<Rectangle Height="1"
+        <Rectangle Height="1"
 				   Style="{DynamicResource SeparatorRectangleStyleKey}" />
-
-	</StackPanel>
+    </StackPanel>
 </UserControl>
