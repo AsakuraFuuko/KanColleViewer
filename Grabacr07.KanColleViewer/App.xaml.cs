@@ -48,22 +48,40 @@ namespace Grabacr07.KanColleViewer
             KanColleClient.Current.Proxy.UpstreamProxySettings = Settings.Current.ProxySettings;
             KanColleClient.Current.Proxy.UpstreamSSLProxySettings = Settings.Current.SSLProxySettings;
 
-            ResourceService.Current.ChangeCulture(Settings.Current.Culture);
-            // Initialize translations
-            KanColleClient.Current.Translations.EnableTranslations = Settings.Current.EnableTranslations;
-            KanColleClient.Current.Translations.EnableAddUntranslated = Settings.Current.EnableAddUntranslated;
-            KanColleClient.Current.Translations.ChangeCulture(Settings.Current.Culture);
+			// Update notification and download new translations (if enabled)
+			Task.Factory.StartNew(
+				() =>
+				{
+					if (KanColleClient.Current.Updater.LoadVersion(AppSettings.Default.KCVUpdateUrl.AbsoluteUri, AppSettings.Default.KCVUpdateTransUrl.AbsoluteUri))
+					{
+						if (Settings.Current.EnableUpdateNotification && KanColleClient.Current.Updater.IsOnlineVersionGreater(0, ProductInfo.Version.ToString()))
+						{
+							PluginHost.Instance.GetNotifier().Show(NotifyType.Other,
+								KanColleViewer.Properties.Resources.Updater_Notification_Title,
+								string.Format(KanColleViewer.Properties.Resources.Updater_Notification_NewAppVersion, KanColleClient.Current.Updater.GetOnlineVersion(0)),
+								() => Process.Start(KanColleClient.Current.Updater.GetOnlineVersion(0, true)));
+						}
 
-            // Update notification and download new translations (if enabled)
-            if (KanColleClient.Current.Updater.LoadVersion(AppSettings.Default.KCVUpdateUrl.AbsoluteUri, AppSettings.Default.KCVUpdateTransUrl.AbsoluteUri))
-            {
-                if (Settings.Current.EnableUpdateNotification && KanColleClient.Current.Updater.IsOnlineVersionGreater(0, ProductInfo.Version.ToString()))
-                {
-                    PluginHost.Instance.GetNotifier().Show(NotifyType.Other,
-                        KanColleViewer.Properties.Resources.Updater_Notification_Title,
-                        string.Format(KanColleViewer.Properties.Resources.Updater_Notification_NewAppVersion, KanColleClient.Current.Updater.GetOnlineVersion(0)),
-                        () => Process.Start(KanColleClient.Current.Updater.GetOnlineVersion(0, true)));
-                }
+						if (Settings.Current.EnableUpdateTransOnStart)
+						{
+							if (KanColleClient.Current.Updater.UpdateTranslations(KanColleClient.Current.Translations) > 0)
+							{
+								PluginHost.Instance.GetNotifier().Show(NotifyType.Other,
+									KanColleViewer.Properties.Resources.Updater_Notification_Title,
+									KanColleViewer.Properties.Resources.Updater_Notification_TransUpdate_Success,
+									() => App.ViewModelRoot.Activate());
+								KanColleClient.Current.Translations.ChangeCulture(Settings.Current.Culture);
+							}
+						}
+					}
+				}
+			);
+			
+			ThemeService.Current.Initialize(this, Theme.Dark, Accent.Purple);
+            
+			ViewModelRoot = new MainWindowViewModel();
+			this.MainWindow = new MainWindow { DataContext = ViewModelRoot };
+			this.MainWindow.Show();
 
                 if (Settings.Current.EnableUpdateTransOnStart)
                 {

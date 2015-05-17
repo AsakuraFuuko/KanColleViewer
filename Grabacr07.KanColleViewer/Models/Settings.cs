@@ -23,7 +23,7 @@ namespace Grabacr07.KanColleViewer.Models
             "KanColleViewer",
             "Settings.xml");
 
-        private static readonly string CurrentSettingsVersion = "1.10";
+		private static readonly string CurrentSettingsVersion = "1.11";
 
         public static Settings Current { get; set; }
 
@@ -77,8 +77,10 @@ namespace Grabacr07.KanColleViewer.Models
                 VerticalSize = new Point(0, 1000),
                 BrowserVerticalPosition = "Top",
                 BrowserHorizontalPosition = "Left",
-            };
-        }
+				CloseConfirm = true,
+				CloseConfirmOnlyInSortie = true,
+			};
+		}
 
         #endregion static members
 
@@ -960,28 +962,8 @@ namespace Grabacr07.KanColleViewer.Models
 
         #endregion CustomSoundVolume 変更通知プロパティ
 
-        #region EnableLogging 変更通知プロパティ
-
-        private bool _EnableLogging;
-
-        public bool EnableLogging
-        {
-            get { return this._EnableLogging; }
-            set
-            {
-                if (this._EnableLogging != value)
-                {
-                    this._EnableLogging = value;
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
-
-        #endregion EnableLogging 変更通知プロパティ
-
-        #region Orientation
-
-        [XmlIgnore]
+		#region Orientation 変更通知プロパティ
+		[XmlIgnore]
         private OrientationType _Orientation;
 
         [XmlIgnore]
@@ -1013,24 +995,13 @@ namespace Grabacr07.KanColleViewer.Models
             }
         }
 
-        #endregion Orientation
+		#region MenuIcon 変更通知プロパティ
 
         #region MenuIcon
 
         private bool _MenuIcon;
 
-        public bool MenuIcon
-        {
-            get { return this._MenuIcon; }
-            set
-            {
-                if (this._MenuIcon != value)
-                {
-                    this._MenuIcon = value;
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+		#region BackupSize 変更通知プロパティ
 
         #endregion MenuIcon
 
@@ -1053,24 +1024,9 @@ namespace Grabacr07.KanColleViewer.Models
 
         private Point _VerticalSize;
 
-        public Point VerticalSize
-        {
-            get { return this._VerticalSize; }
-            set
-            {
-                if (this._VerticalSize != value)
-                {
-                    this._VerticalSize = value;
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+		#region BrowserPosition 変更通知プロパティ
 
-        #endregion BackupSize
-
-        #region BrowserPosition
-
-        private string _BrowserHorizontalPosition;
+		private string _BrowserHorizontalPosition;
 
         public string BrowserHorizontalPosition
         {
@@ -1102,12 +1058,48 @@ namespace Grabacr07.KanColleViewer.Models
 
         #endregion BrowserPosition
 
-        public void Save()
-        {
-            if (!this.ShipCatalog_SaveFilters)
-            {
-                this.ShipCatalog_LevelFilter_Level2OrMore = true;
-                this.ShipCatalog_LevelFilter_Level1 = this.ShipCatalog_LevelFilter_Both = false;
+		#region CloseConfirm 変更通知プロパティ
+
+		private bool _CloseConfirm;
+
+		public bool CloseConfirm
+		{
+			get { return this._CloseConfirm; }
+			set
+			{
+				if (this._CloseConfirm != value)
+				{
+					this._CloseConfirm = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		#region CloseConfirmOnlyInSortie 変更通知プロパティ
+
+		private bool _CloseConfirmOnlyInSortie;
+
+		public bool CloseConfirmOnlyInSortie
+		{
+			get { return this._CloseConfirmOnlyInSortie; }
+			set
+			{
+				if (this._CloseConfirmOnlyInSortie != value)
+				{
+					this._CloseConfirmOnlyInSortie = value;
+					this.RaisePropertyChanged();
+				}
+			}
+		}
+		#endregion
+
+		public void Save()
+		{
+			if (!this.ShipCatalog_SaveFilters)
+			{
+				this.ShipCatalog_LevelFilter_Level2OrMore = true;
+				this.ShipCatalog_LevelFilter_Level1 = this.ShipCatalog_LevelFilter_Both = false;
 
                 this.ShipCatalog_LockFilter_Locked = true;
                 this.ShipCatalog_LockFilter_Both = this.ShipCatalog_LockFilter_Unlocked = false;
