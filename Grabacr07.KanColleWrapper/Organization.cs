@@ -482,18 +482,6 @@ namespace Grabacr07.KanColleWrapper
             }
         }
 
-        private void DropShip(kcsapi_battleresult source)
-        {
-            this.DroppedShip = new DroppedShip(source.api_get_ship);
-        }
-
-        private void DropShip(kcsapi_combined_battle_battleresult source)
-        {
-            if (source.api_get_ship == null) return;
-
-            this.DroppedShip = new DroppedShip(source.api_get_ship);
-        }
-
         private void Update(kcsapi_ship_deck source)
         {
             if (source.api_deck_data != null)
@@ -513,6 +501,20 @@ namespace Grabacr07.KanColleWrapper
                     target.Update(ship);
                 }
             }
+        }
+
+        private void DropShip(kcsapi_battleresult source)
+        {
+            if (source.api_get_ship == null) return;
+
+            this.DroppedShip = new DroppedShip(source.api_get_ship);
+        }
+
+        private void DropShip(kcsapi_combined_battle_battleresult source)
+        {
+            if (source.api_get_ship == null) return;
+
+            this.DroppedShip = new DroppedShip(source.api_get_ship);
         }
 
         #endregion 出撃 (Sortie / Homing / Escape)
