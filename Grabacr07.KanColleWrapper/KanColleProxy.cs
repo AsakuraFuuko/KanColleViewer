@@ -1,7 +1,4 @@
-﻿using Fiddler;
-using Grabacr07.KanColleWrapper.Win32;
-using Livet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +6,9 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Fiddler;
+using Grabacr07.KanColleWrapper.Win32;
+using Livet;
 
 namespace Grabacr07.KanColleWrapper
 {
@@ -119,7 +119,7 @@ namespace Grabacr07.KanColleWrapper
                 ? string.Format("[{0}]:{1}", settings.Host, settings.Port)
                 : string.Format("{0}:{1}", settings.Host, settings.Port);
 
-            if ((IsSessionSSL(requestingSession) && settings.IsEnabledOnSSL))
+            if ((IsSessionSSL(requestingSession) && UpstreamSSLProxySettings.IsEnabledOnSSL))
                 gateway = UpstreamSSLProxySettings.Host.Contains(":")
                 ? string.Format("[{0}]:{1}", UpstreamSSLProxySettings.Host, UpstreamSSLProxySettings.Port)
                 : string.Format("{0}:{1}", UpstreamSSLProxySettings.Host, UpstreamSSLProxySettings.Port);

@@ -322,8 +322,8 @@ namespace Grabacr07.KanColleViewer.Models
 
         public bool EnableSSLProxy
         {
-            get { return this.ProxySettings.IsEnabledOnSSL; }
-            set { this.ProxySettings.IsEnabledOnSSL = value; }
+            get { return this.SSLProxySettings.IsEnabledOnSSL; }
+            set { this.SSLProxySettings.IsEnabledOnSSL = value; }
         }
 
         public string ProxyHost

@@ -46,6 +46,7 @@ namespace Grabacr07.KanColleViewer
 
             KanColleClient.Current.Proxy.Startup(AppSettings.Default.LocalProxyPort);
             KanColleClient.Current.Proxy.UpstreamProxySettings = Settings.Current.ProxySettings;
+            KanColleClient.Current.Proxy.UpstreamSSLProxySettings = Settings.Current.SSLProxySettings;
 
             ResourceService.Current.ChangeCulture(Settings.Current.Culture);
             // Initialize translations
