@@ -482,8 +482,31 @@ namespace Grabacr07.KanColleWrapper
             }
         }
 
+        private void Update(kcsapi_ship_deck source)
+        {
+            if (source.api_deck_data != null)
+            {
+                foreach (var deck in source.api_deck_data)
+                {
+                    var target = this.Fleets[deck.api_id];
+                    target.Update(deck);
+                }
+            }
+
+            if (source.api_ship_data != null)
+            {
+                foreach (var ship in source.api_ship_data)
+                {
+                    var target = this.Ships[ship.api_id];
+                    target.Update(ship);
+                }
+            }
+        }
+
         private void DropShip(kcsapi_battleresult source)
         {
+            if (source.api_get_ship == null) return;
+
             this.DroppedShip = new DroppedShip(source.api_get_ship);
         }
 
@@ -491,41 +514,9 @@ namespace Grabacr07.KanColleWrapper
         {
             if (source.api_get_ship == null) return;
 
-		private void Update(kcsapi_ship_deck source)
-		{
-			if (source.api_deck_data != null)
-			{
-				foreach (var deck in source.api_deck_data)
-				{
-					var target = this.Fleets[deck.api_id];
-					target.Update(deck);
-				}
-			}
+            this.DroppedShip = new DroppedShip(source.api_get_ship);
+        }
 
-			if (source.api_ship_data != null)
-			{
-				foreach (var ship in source.api_ship_data)
-				{
-					var target = this.Ships[ship.api_id];
-					target.Update(ship);
-				}
-			}
-		}
-
-		private void DropShip(kcsapi_battleresult source)
-		{
-			if (source.api_get_ship == null) return;
-
-			this.DroppedShip = new DroppedShip(source.api_get_ship);
-		}
-
-		private void DropShip(kcsapi_combined_battle_battleresult source)
-		{
-			if (source.api_get_ship == null) return;
-
-			this.DroppedShip = new DroppedShip(source.api_get_ship);
-		}
-        
-		#endregion
-	}
+        #endregion 出撃 (Sortie / Homing / Escape)
+    }
 }
